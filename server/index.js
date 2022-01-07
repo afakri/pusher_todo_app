@@ -80,6 +80,12 @@
     app.post('/items/complete', (req, res) => {
         const idx = req.body.index;
 
+        if (todos[idx] == undefined) {
+            res
+                .status(400)
+                .send({ message: 'Index does not exist', status: false });
+            return;
+        }
         todos[idx].completed = true;
 
         pusher.trigger('todo', 'complete', { index: idx });
